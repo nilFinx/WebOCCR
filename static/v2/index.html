@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>WebOCCR</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+	<body>
+		<h1>WebOCCR</h1>
+		<h2>V1 available at <a href="/v1/">here</a></h2>
+		<h3>API USAGE ALLOWED!! Just don't spam me too much. Also, please host it yourself if you can. It's open source <a href="https://github.com/nilfinx/WebOCCR">here</a>!</h3>
+		<div id="upload-section">
+			<input type="file" id="plist" accept=".plist,.txt,.xml">
+			<input type="submit" id="submit" value="Check">
+			<input type="checkbox" id="expand" checked> Expand by default
+		</div>
+		<div class="tbox">
+			<span id="results">Results comes here...</span>
+			<span id="errors">Warning comes here...</span>
+		</div>
+	</body>
+	<template id="row">
+		<section>
+			<details id="dets">
+				<summary id="title"></summary>
+				<span id="text"></span>
+			</details>
+		</section>
+	</template>
+	<script src="script.js"></script>
+</html>

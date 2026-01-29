@@ -1,22 +1,32 @@
 require "string-extensions"
-require "util"
 
-_G.fs = require "fs"
-_G.json = require "json"
+local function table_patch(table, patches)
+    for k, v in pairs(patches) do
+        if type(table[k]) == "table" then
+            if (not next(table)) or #table ~= 0 then
+                table[k] = v
+            else
+                table_patch(table[k], patches[k])
+            end
+        else
+            table[k] = v
+        end
+    end
+    return table
+end
 
-local rqluvit = require
-_G.require = rqluvit
+fs = require "fs"
 
-_G.cfg = require "cfg_default"
+cfg = require "cfg_default"
 if fs.existsSync "cfg.lua" then
     if not pcall(function() require "cfg" end) then
         print "cfg.lua failed to load"
         os.exit(1)
     end
-    cfg = table.patch(_G.cfg, require "cfg")
+    cfg = table_patch(_G.cfg, require "cfg")
 end
 
-_G.l = require "logger" (cfg.log_level)
+l = require "logger" (cfg.log_level)
 
 app = require('weblit-app')
 	.bind({
@@ -28,16 +38,29 @@ app = require('weblit-app')
 	.use(require "weblit-logger")
 	.use(require "weblit-auto-headers")
 	.use(require "weblit-etag-cache")
+	.use(require "weblit-static" ("static/v2"))
 	.use(require "weblit-static" ("static"))
 
-occr = require "newoccrmain"
+package.path = package.path .. ";occr/src/?.lua"
+_G.OCCR = require "occr.src"
 
+local v1 = require "v1"
 app.route({
 		method = "POST",
 		path = "/api/v1/check"
 	}, function (req, res, go)
-		res.body = occr(req.body)
+		res.body = v1(req.body)
 		res.code = 200
 	end)
+
+local v2 = require "v2"
+app.route({
+		method = "POST",
+		path = "/api/v2/check"
+	}, function (req, res, go)
+		res.body = v2(req.body)
+		res.code = 200
+	end)
+
 
 	.start()
