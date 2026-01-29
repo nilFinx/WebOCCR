@@ -42,7 +42,7 @@ app = require('weblit-app')
 	.use(require "weblit-static" ("static"))
 
 package.path = package.path .. ";occr/src/?.lua"
-_G.OCCR = require "occr.src"
+_G.OCCR = require "occr.src.init"
 
 local v1 = require "v1"
 app.route({
