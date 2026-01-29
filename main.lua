@@ -23,7 +23,7 @@ if fs.existsSync "cfg.lua" then
         print "cfg.lua failed to load"
         os.exit(1)
     end
-    cfg = table_patch(_G.cfg, require "cfg")
+    cfg = table_patch(cfg, require "cfg")
 end
 
 l = require "logger" (cfg.log_level)
