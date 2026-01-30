@@ -61,13 +61,15 @@ end
 for _, k in pairs(returns.order) do
 	local t = returns.result[k]
 	local txt = ""
-	if next(t.result) then
+	if t and next(t.result) then
 		for _, v in pairs(t.result) do
 			txt = txt .. (" "..v) .. "\n"
 		end
 		txt = txt .. "\n"
+		sections[k] = {text = txt, checked = t.checked, total = t.total}
+	else
+		sections[k] = {text = txt}
 	end
-	sections[k] = {text = txt, checked = t.checked, total = t.total}
 	table.insert(order, k)
 end
 
