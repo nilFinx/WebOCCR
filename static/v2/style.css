@@ -8,6 +8,7 @@ h1, h2, h3 {
 	margin: 0;
 }
 
-summary {
+section summary,
+section span#title {
 	user-select: none;
 }
