@@ -31,21 +31,23 @@ document.getElementById("submit").addEventListener("click", () => {
 						for (let i = 0; i < data.order.length; i++) {
 							const k = data.order[i];
 							const block = data.sections[k];
-							
-							const clone = template.content.cloneNode(true);
-							if (checked) {
-								clone.getElementById("dets").setAttribute("open", "");
-							} else {
-								clone.getElementById("dets").removeAttribute("open");
-							}
-							if (block.checked) {
-								clone.getElementById("title").innerText = `${k} (${block.checked.toString()}/${block.total.toString()}):`;
-							} else {
-								clone.getElementById("title").innerText = k+":";
-							}
-							clone.getElementById("text").innerText = block.text;
+							if (block?.text && block.text !== "") {
+								console.log(block)
+								const clone = template.content.cloneNode(true);
+								if (checked) {
+									clone.getElementById("dets").setAttribute("open", "");
+								} else {
+									clone.getElementById("dets").removeAttribute("open");
+								}
+								if (block.checked) {
+									clone.getElementById("title").innerText = `${k} (${block.checked.toString()}/${block.total.toString()}):`;
+								} else {
+									clone.getElementById("title").innerText = k+":";
+								}
+								clone.getElementById("text").innerText = block.text;
 
-							body.appendChild(clone);
+								body.appendChild(clone);
+							}
 						}
 					} else {
 						let ht = "";
