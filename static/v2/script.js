@@ -27,11 +27,12 @@ document.getElementById("submit").addEventListener("click", () => {
 					if ("content" in document.createElement("template")) {
 						const body = document.getElementById("results");
 						const template = document.getElementById("row");
+						const templateempty = document.getElementById("emptyrow");
 
 						for (let i = 0; i < data.order.length; i++) {
 							const k = data.order[i];
 							const block = data.sections[k];
-							if (block?.text && block.text !== "") {
+							if (block.text && block.text !== "") {
 								console.log(block)
 								const clone = template.content.cloneNode(true);
 								if (checked) {
@@ -41,11 +42,17 @@ document.getElementById("submit").addEventListener("click", () => {
 								}
 								if (block.checked) {
 									clone.getElementById("title").innerText = `${k} (${block.checked.toString()}/${block.total.toString()}):`;
+								} else if (block.total) {
+									clone.getElementById("title").innerText = `${k} (0/${block.total.toString()}):`;
 								} else {
 									clone.getElementById("title").innerText = k+":";
 								}
 								clone.getElementById("text").innerText = block.text;
 
+								body.appendChild(clone);
+							} else {
+								const clone = templateempty.content.cloneNode(true);
+								clone.getElementById("title").innerText = k;
 								body.appendChild(clone);
 							}
 						}
