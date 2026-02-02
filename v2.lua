@@ -25,6 +25,23 @@ local function show(name, tbl)
 	end
 end
 
+local function parsedectlist(k)
+		local t = returns.result[k]
+	local txt = ""
+	if t and next(t.result) then
+		for _, v in pairs(t.result) do
+			txt = txt .. (" "..v) .. "\n"
+		end
+		txt = txt .. "\n"
+		sections[k] = {text = txt, checked = t.checked, total = t.total}
+	else
+		sections[k] = {text = txt}
+	end
+	table.insert(order, k)
+end
+
+parsedectlist("Critical")
+
 show("Kexts", data.kexts.normal)
 show("Kexts (plugin)", data.kexts.plugin)
 show("Kexts (disabled)", data.kexts.disabled.normal)
@@ -59,19 +76,28 @@ end
 
 ---@diagnostic disable-next-line: param-type-mismatch
 for _, k in pairs(returns.order) do
-	local t = returns.result[k]
-	local txt = ""
-	if t and next(t.result) then
-		for _, v in pairs(t.result) do
-			txt = txt .. (" "..v) .. "\n"
-		end
-		txt = txt .. "\n"
-		sections[k] = {text = txt, checked = t.checked, total = t.total}
-	else
-		sections[k] = {text = txt}
+	if k ~= "Critical" then
+		parsedectlist(k)
 	end
-	table.insert(order, k)
 end
 
-return json.encode({sections = sections, errors = returns.errormsges, order = order})
+local r = returns
+local ems = ""
+if next(r.missing) then
+	ems = "Missing:\n"
+	ems = ems .. table.concat(r.missing, "\n")
+end
+
+if next(r.errormsges) then
+	if ems ~= "" then
+		ems = ems .. "\n\n"
+	end
+	ems = ems .. "Warning:\n"
+	for _, v in pairs(r.errormsges) do
+		ems = ems .. v[1] .. "\n"
+	end
+	ems = ems:sub(1, -1) -- Trim newline
+end
+
+return json.encode({sections = sections, errors = ems, order = order})
 end
