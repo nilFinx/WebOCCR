@@ -1,0 +1,14 @@
+.tbox {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+h1, h2, h3 {
+	margin: 0;
+}
+
+section summary,
+section span#title {
+	user-select: none;
+}

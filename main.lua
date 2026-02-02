@@ -38,7 +38,7 @@ app = require('weblit-app')
 	.use(require "weblit-logger")
 	.use(require "weblit-auto-headers")
 	.use(require "weblit-etag-cache")
-	.use(require "weblit-static" ("static/v2"))
+	.use(require "weblit-static" ("static/v3"))
 	.use(require "weblit-static" ("static"))
 
 package.path = package.path .. ";occr/src/?.lua"
@@ -60,6 +60,16 @@ app.route({
 		path = "/api/v2/check"
 	}, function (req, res, go)
 		res.body = v2(req.body)
+		res.code = 200
+		res.headers["Content-Type"] = "application/json"
+	end)
+
+local v3 = require "v3"
+app.route({
+		method = "POST",
+		path = "/api/v3/check"
+	}, function (req, res, go)
+		res.body = v3(req.body)
 		res.code = 200
 		res.headers["Content-Type"] = "application/json"
 	end)
