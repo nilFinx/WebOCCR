@@ -51,6 +51,7 @@ app.route({
 	}, function (req, res, go)
 		res.body = v1(req.body)
 		res.code = 200
+		res.headers["Content-Type"] = "text/plain"
 	end)
 
 local v2 = require "v2"
@@ -60,6 +61,7 @@ app.route({
 	}, function (req, res, go)
 		res.body = v2(req.body)
 		res.code = 200
+		res.headers["Content-Type"] = "application/json"
 	end)
 
 
