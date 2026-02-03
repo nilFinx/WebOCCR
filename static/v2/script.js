@@ -33,7 +33,6 @@ document.getElementById("submit").addEventListener("click", () => {
 							const k = data.order[i];
 							const block = data.sections[k];
 							if (block.text && block.text !== "") {
-								console.log(block)
 								const clone = template.content.cloneNode(true);
 								if (checked) {
 									clone.getElementById("dets").setAttribute("open", "");
