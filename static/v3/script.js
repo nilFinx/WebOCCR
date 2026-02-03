@@ -26,10 +26,12 @@ document.getElementById("submit").addEventListener("click", () => {
 				res.json()
 				.then (data => {
 					let mist = "";
-					for (let i = 0; i < data.missing.length; i++) {
-						mist = mist + data.missing[i] + "\n"
+					if (data.missing) {
+						for (let i = 0; i < data.missing?.length; i++) {
+							mist = mist + data.missing[i] + "\n"
+						}
+						missingspan.innerText = mist;
 					}
-					missingspan.innerText = mist;
 					if ("content" in document.createElement("template")) {
 						const template = document.getElementById("row");
 						const templateempty = document.getElementById("emptyrow");
